@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Let's learn Ember.js</title>
+    <link rel="stylesheet" href="css/vendor/foundation.min.css"/>
+    <link rel="stylesheet" href="css/vendor/foundation-icons.css"/>
+    <script src="js/vendor/jquery-1.9.1.js"></script>
+    <script src="js/vendor/handlebars-v1.1.2.js"></script>
+    <script src="js/vendor/ember-v1.2.js"></script>
+    <script src="js/vendor/ember-data.js"></script>
+    <script src="js/vendor/modernizr.foundation.js"></script>
+    <script src="js/vendor/foundation.min.js"></script>
+    <script src="js/vendor/foundation.app.js"></script>
+    <script src="js/vendor/localstorage_adapter.js"></script>
+    <script src="js/app/app.js"></script>
+    <script src="js/app/store.js"></script>
+    <script src="js/app/router.js"></script>
+    <script src="js/app/controllers/bookmarks.js"></script>
+    <script src="js/app/controllers/bookmarks_new.js"></script>
+    <script src="js/app/models/bookmark.js"></script>
+    <script src="js/app/routes/bookmarks_new.js"></script>
+    <script src="js/app/routes/bookmarks.js"></script>
+</head>
+<body>
+
+<script type="text/x-handlebars">
+    <nav class="top-bar">
+        <ul>
+            <li class="name">
+                <h1>{{#linkTo 'index'}}Scrumptious{{/linkTo}}</h1>
+            </li>
+            <li>{{#linkTo 'bookmarks'}}Bookmarks{{/linkTo}}</li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="row">
+            {{outlet}}
+        </div>
+    </div>
+</script>
+
+<script type='text/x-handlebars' data-template-name='bookmarks'>
+    {{partial "bookmarkcontrols"}}
+    <h2>You have {{controller.length}} bookmarks</h2>
+    <table class="twelve">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>URL</th>
+            <th>Favorite</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each controller.favorites}}
+        <tr>
+            <td>{{title}}</td>
+            <td>{{url}}</td>
+            <td>{{view Ember.Checkbox checkedBinding="favorite"}}</td>
+        </tr>
+        {{else}}
+            <tr>
+                <td>You have no bookmarks.</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+
+    <table class="twelve">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>URL</th>
+            <th>Favorite</th>
+        </tr>
+        </thead>
+        <tbody>
+        {{#each controller.regular}}
+        <tr>
+            <td>{{title}}</td>
+            <td>{{url}}</td>
+            <td>{{view Ember.Checkbox checkedBinding="favorite"}}</td>
+        </tr>
+        {{else}}
+            <tr>
+                <td>You have no bookmarks.</td>
+            </tr>
+        {{/each}}
+        </tbody>
+    </table>
+
+    {{#linkTo 'bookmarks.new'}}Add new bookmark{{/linkTo}}
+    {{outlet}}
+</script>
+
+<script type='text/x-handlebars' data-template-name='_bookmarkcontrols'>
+    <dl class="sub-nav" style="float:right; margin-top: 1em;">
+        <dt {{bindAttr class="sortAscending:fi-arrow-down:fi-arrow-up"}}>Sort by:</dt>
+        <dd><a {{action pushSort 'name'}}>Name</a></dd>
+        <dd><a {{action pushSort 'title'}}>Title</a></dd>
+        <dd><a {{action pushSort 'favorite'}}>Favorite</a></dd>
+    </dl>
+</script>
+
+<script type='text/x-handlebars' data-template-name='bookmarks/new'>
+    <h3>New bookmark</h3>
+
+    <form {{action "save" on="submit"}}>
+        <p>
+            {{view Ember.TextField valueBinding="title" placeholder="Fill in the title"}}
+        </p>
+
+        <p>
+            {{view Ember.TextField valueBinding="url" placeholder="Fill in the URL"}}
+        </p>
+
+    <p>
+        <button>Create bookmark</button>
+    </p>
+    </form>
+</script>
+
+</body>
+</html>
